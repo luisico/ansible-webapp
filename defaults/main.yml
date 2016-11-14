@@ -1,0 +1,11 @@
+---
+webapp_name: webapp
+webapp_user: webapp
+webapp_group: webapp
+webapp_path: /home/{{webapp_user}}/{{webapp_name}}
+webapp_repo:
+webapp_repo_version: master
+webapp_repo_key:
+webapp_buildpack:
+webapp_start:
+webapp_env: {}

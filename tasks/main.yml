@@ -1,0 +1,51 @@
+---
+- name: Install git
+  yum: name=git state=latest
+
+- name: Add group
+  group: name={{webapp_group}} state=present
+
+- name: Add user
+  user: name={{webapp_user}} group={{webapp_group}}
+
+- block:
+  - name: Get buildpack
+    git: repo={{webapp_buildpack}} dest={{webapp_path}}/buildpack
+
+  - name: Setup deployment directories
+    deploy_helper: path={{webapp_path}}
+
+  - name: Drop app's deploy key
+    copy: dest={{webapp_path}}/app.key content={{webapp_repo_key}} owner={{webapp_user}} group={{webapp_group}} mode=0400
+
+  - name: Clone app
+    git: repo={{webapp_repo}} dest={{deploy_helper.new_release_path}} key_file={{webapp_path}}/app.key accept_hostkey=yes version={{webapp_repo_version}}
+
+  - name: Mark release as unfinished
+    file: path={{deploy_helper.new_release_path}}/{{deploy_helper.unfinished_filename}} state=touch
+
+  - name: Set app env variables
+    template: dest={{webapp_path}}/env src=env.j2 mode=0600
+
+  - name: Detect buildpack
+    command: '{{webapp_detect}} {{deploy_helper.new_release_path}}'
+
+  - name: Compile buildpack
+    command: "{{webapp_compile}} {{deploy_helper.new_release_path}} {{deploy_helper.project_path}}/cache {{deploy_helper.project_path}}/env.d"
+    register: deploy_result
+
+  - debug: msg={{deploy_result.stdout_lines}}
+
+  - name: Finalize the deploy
+    deploy_helper: path={{deploy_helper.project_path}} release={{deploy_helper.new_release}} state=finalize
+    notify: Restart app
+
+  become: yes
+  become_user: '{{webapp_user}}'
+
+- name: Install app service
+  template: dest=/etc/systemd/system/{{webapp_name}}.service src=systemd.service.j2 owner=root group=root mode=0644
+  notify: Restart app
+
+- name: Start app service
+  systemd: name={{webapp_name}} enabled=yes state=started daemon_reload=yes

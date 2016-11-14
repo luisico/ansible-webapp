@@ -1,0 +1,17 @@
+[Unit]
+Description={{webapp_name}}
+
+[Service]
+EnvironmentFile={{webapp_path}}/env
+WorkingDirectory={{webapp_path}}/current
+ExecStart={{webapp_start}}
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier={{webapp_name}}
+User={{webapp_user}}
+Group={{webapp_group}}
+
+[Install]
+WantedBy=multi-user.target
