@@ -2,7 +2,8 @@
 Description={{webapp_name}}
 
 [Service]
-EnvironmentFile={{webapp_path}}/env
+EnvironmentFile=-/home{{webapp_user}}/export
+EnvironmentFile=-{{webapp_path}}/env
 WorkingDirectory={{webapp_path}}/current
 ExecStart={{webapp_start}}
 Restart=always
