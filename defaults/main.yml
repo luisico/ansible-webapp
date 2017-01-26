@@ -10,3 +10,9 @@ webapp_repo_public_key:
 webapp_buildpack:
 webapp_start:
 webapp_env: {}
+webapp_files: []
+# The following parameters are passed to the copy module:
+# - src: 'path'         # use src or content, but not both
+#   content: 'content'
+#   dest: 'path'
+#   mode: 0600          # defaults to 0600
