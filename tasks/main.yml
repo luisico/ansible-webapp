@@ -40,9 +40,9 @@
 
   - name: Compile buildpack
     command: "{{webapp_compile}} {{deploy_helper.new_release_path}} {{deploy_helper.project_path}}/cache {{deploy_helper.project_path}}/env.d"
-    register: deploy_result
+    register: compile_result
 
-  - debug: msg={{deploy_result.stdout_lines}}
+  - debug: msg={{compile_result.stdout_lines}}
 
   - name: Finalize the deploy
     deploy_helper: path={{deploy_helper.project_path}} release={{deploy_helper.new_release}} state=finalize
