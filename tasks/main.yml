@@ -16,8 +16,8 @@
     deploy_helper: path={{webapp_path}}
 
   - name: Drop app deploy key
-    copy: dest={{webapp_path}}/app.key content={{webapp_repo_key}} owner={{webapp_user}} group={{webapp_group}} mode=0400
-    when: webapp_repo_key
+    copy: dest={{webapp_path}}/app.key content={{webapp_repo_private_key}} owner={{webapp_user}} group={{webapp_group}} mode=0400
+    when: webapp_repo_private_key
 
   - name: Clone app
     git: repo={{webapp_repo}} dest={{deploy_helper.new_release_path}} key_file={{webapp_path}}/app.key accept_hostkey=yes version={{webapp_repo_version}}
