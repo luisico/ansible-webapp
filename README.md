@@ -27,8 +27,7 @@ Example:
 ```
 - hosts: servers
   roles:
-  - webapp
-
+    - webapp
 ```
 
 TODO
@@ -36,6 +35,7 @@ TODO
 - Generalize use of buildpacks.
 - Generalize use of env variables using `env.d` and ansible's `assemble` module.
 - Support systemd alternatives, ie monit, supervisor, pm2, etc...
+- Fix idempotency with capistrano-like directories.
 
 Licence
 -------
@@ -43,4 +43,7 @@ Licensed under [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
 Author Information
 ------------------
-Luis Gracia <luis.gracia@ebi.ac.uk>
+Luis Gracia while at [EMBL-EBI](http://www.ebi.ac.uk/):
+- luis.gracia [at] ebi.ac.uk
+- GitHub at [luisico](https://github.com/luisico)
+- Galaxy at [luisico](https://galaxy.ansible.com/luisico)
