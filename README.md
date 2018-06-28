@@ -36,6 +36,7 @@ TODO
 - Generalize use of env variables using `env.d` and ansible's `assemble` module.
 - Support systemd alternatives, ie monit, supervisor, pm2, etc...
 - Fix idempotency with capistrano-like directories.
+- Document defaults.
 
 Licence
 -------
