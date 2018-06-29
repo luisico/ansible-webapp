@@ -45,10 +45,12 @@
 
   - name: Detect buildpack
     command: '{{webapp_detect}} {{deploy_helper.new_release_path}}'
+    environment: '{{webapp_buildpack_env}}'
 
   - name: Compile buildpack
     command: "{{webapp_compile}} {{deploy_helper.new_release_path}} {{deploy_helper.project_path}}/cache {{deploy_helper.project_path}}/env.d"
     register: webapp__r_compile
+    environment: '{{webapp_buildpack_env}}'
 
   - name: Print compilation output
     debug: msg={{webapp__r_compile.stdout_lines}}
