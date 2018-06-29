@@ -62,9 +62,12 @@
   become: yes
   become_user: '{{webapp_user}}'
 
-- name: Install app service
-  template: dest=/etc/systemd/system/{{webapp_name}}.service src=systemd.service.j2 owner=root group=root mode=0644
-  notify: Restart app
+- block:
+  - name: Install app service
+    template: dest=/etc/systemd/system/{{webapp_name}}.service src=systemd.service.j2 owner=root group=root mode=0644
+    notify: Restart app
 
-- name: Start app service
-  systemd: name={{webapp_name}} enabled=yes state=started daemon_reload=yes
+  - name: Start app service
+    systemd: name={{webapp_name}} enabled=yes state=started daemon_reload=yes
+
+  when: webapp_start | default()
