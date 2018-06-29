@@ -1,6 +1,9 @@
 ---
-- name: Install git
-  yum: name=git state=latest
+- name: Install dependencies
+  yum: name={{item}} state=latest
+  with_items:
+    - git
+    - '{{webapp_extra_packages}}'
 
 - name: Add group
   group: name={{webapp_group}} state=present
