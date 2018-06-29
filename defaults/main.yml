@@ -1,6 +1,7 @@
 ---
 webapp_name: webapp
 webapp_user: webapp
+webapp_authorized_keys: []
 webapp_group: webapp
 webapp_path: /home/{{webapp_user}}/{{webapp_name}}
 webapp_repo:
