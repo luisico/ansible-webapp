@@ -64,6 +64,10 @@
     deploy_helper: path={{deploy_helper.project_path}} release={{deploy_helper.new_release}} state=finalize
     notify: Restart app
 
+  - name: Add login script to profile
+    blockinfile: path=~/.bash_profile block='{{webapp_login_script}}' owner={{webapp_user}} group={{webapp_group}} mode=0622
+    when: webapp_login_script | default()
+
   become: yes
   become_user: '{{webapp_user}}'
 

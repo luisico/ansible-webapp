@@ -13,6 +13,7 @@ webapp_buildpack_env: {}
 webapp_extra_packages: []
 webapp_start:
 webapp_env: {}
+webapp_login_script:
 webapp_files: []
 # The following parameters are passed to the copy module:
 # - src: 'path'         # use src or content, but not both
