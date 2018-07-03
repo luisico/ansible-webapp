@@ -41,6 +41,7 @@
 
   - name: Set app env variables
     template: dest={{webapp_path}}/env src=env.j2 mode=0600
+    when: webapp_env != []
 
   - name: Drop files
     copy: dest={{item.dest}} src={{item.src | default(omit)}} content='{{item.content | default(omit)}}' mode={{item.mode | default('0600')}}
