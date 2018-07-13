@@ -22,3 +22,5 @@ webapp_files: []
 #   mode: 0600          # defaults to 0600
 #   relative: no        # make the destination relative to the current code deployment directory
 #                       # this keyword is not part of the standard copy module
+webapp_cronjobs: []
+# Parameters are passed to the cron module
