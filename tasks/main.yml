@@ -11,6 +11,9 @@
 - name: Add user
   user: name={{webapp_user}} group={{webapp_group}}
 
+- name: Change permissions for user home dir
+  file: path=/home/{{webapp_user}} mode={{webapp_user_home_mode}}
+
 - name: Add authorized keys
   authorized_key: user={{webapp_user}} key={{item}}
   with_items: '{{webapp_authorized_keys}}'
