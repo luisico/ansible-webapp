@@ -21,6 +21,7 @@
 - block:
   - name: Get buildpack
     git: repo={{webapp_buildpack}} dest={{webapp_path}}/buildpack
+    when: webapp_buildpack is defined and webapp_buildpack != ''
 
   - name: Setup deployment directories
     deploy_helper: path={{webapp_path}}
@@ -75,14 +76,17 @@
   - name: Detect buildpack
     command: '{{webapp_detect}} {{deploy_helper.new_release_path}}'
     environment: '{{webapp_buildpack_env}}'
+    when: webapp_buildpack is defined and webapp_buildpack != ''
 
   - name: Compile buildpack
     command: "{{webapp_compile}} {{deploy_helper.new_release_path}} {{deploy_helper.project_path}}/cache {{deploy_helper.project_path}}/env.d"
     register: webapp__r_compile
     environment: '{{webapp_buildpack_env}}'
+    when: webapp_buildpack is defined and webapp_buildpack != ''
 
   - name: Print compilation output
     debug: msg={{webapp__r_compile.stdout_lines}}
+    when: webapp_buildpack is defined and webapp_buildpack != ''
 
   - name: Finalize the deploy
     deploy_helper: path={{deploy_helper.project_path}} release={{deploy_helper.new_release}} state=finalize
