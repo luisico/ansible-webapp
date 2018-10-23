@@ -1,15 +1,19 @@
 ---
 webapp_name: webapp
 webapp_user: webapp
-webapp_authorized_keys: []
 webapp_group: webapp
+webapp_authorized_keys: []
+
 webapp_path: /home/{{webapp_user}}/{{webapp_name}}
+
 webapp_repo:
 webapp_repo_version: master
 webapp_repo_private_key:
 webapp_repo_public_key:
+
 webapp_buildpack:
 webapp_buildpack_env: {}
+
 webapp_extra_packages: []
 webapp_start:
 webapp_env: {}
