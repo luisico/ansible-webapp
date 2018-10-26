@@ -5,7 +5,7 @@ webapp_group: webapp
 webapp_authorized_keys: []
 
 webapp_path: /home/{{webapp_user}}/{{webapp_name}}
-webapp_user_home_mode: 0700
+webapp_user_home_mode: '0750'
 
 webapp_repo:
 webapp_repo_version: master
