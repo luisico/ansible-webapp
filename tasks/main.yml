@@ -26,6 +26,9 @@
   - name: Setup deployment directories
     deploy_helper: path={{webapp_path}}
 
+  - name: Allow group access to the shared folder
+    file: path={{deploy_helper.shared_path}} mode='0770'
+
   - block:
     - name: Drop app deploy key
       copy: dest={{webapp_path}}/app.key content='{{webapp_repo_private_key}}' owner={{webapp_user}} group={{webapp_group}} mode=0400
