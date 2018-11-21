@@ -12,8 +12,12 @@ webapp_repo_version: master
 webapp_repo_private_key:
 webapp_repo_public_key:
 
-webapp_buildpack:
-webapp_buildpack_env: {}
+webapp_buildpacks: []
+# Example
+# - name: nodejs
+#   repo: https://github.com/heroku/heroku-buildpack-nodejs.git
+#   appdir: subdir/with/node/app
+#   env: {}
 
 webapp_extra_packages: []
 webapp_start:
