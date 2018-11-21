@@ -1,0 +1,15 @@
+---
+- name: Get buildpack {{item.name}}
+  git: repo={{item.buildpack}} dest={{webapp_path}}/buildpacks/{{item.name}}
+
+- name: Detect buildpack {{item.name}}
+  command: '{{webapp_path}}/buildpacks/{{item.name}}/bin/detect {{deploy_helper.new_release_path}}/{{item.directory}}'
+  environment: '{{item.env | default({})}}'
+
+- name: Compile buildpack {{item.name}}
+  command: '{{webapp_path}}/buildpacks/{{item.name}}/bin/compile {{deploy_helper.new_release_path}}/{{item.directory}} {{deploy_helper.project_path}}/cache {{deploy_helper.project_path}}/env.d'
+  register: webapp__r_compile
+  environment: '{{item.env | default({})}}'
+
+- name: Print compilation output
+  debug: msg={{webapp__r_compile.stdout_lines}}

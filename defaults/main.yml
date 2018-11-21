@@ -29,3 +29,10 @@ webapp_files: []
 #                       # this keyword is not part of the standard copy module
 webapp_cronjobs: []
 # Parameters are passed to the cron module
+
+webapp_extra_buildpacks: []
+# Example
+# - name: nodejs
+#   buildpack: https://github.com/heroku/heroku-buildpack-nodejs.git
+#   directory: subdir/with/node/app
+#   env: {}

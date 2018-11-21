@@ -1,3 +1,0 @@
----
-webapp_detect: '{{webapp_path}}/buildpack/bin/detect'
-webapp_compile: '{{webapp_path}}/buildpack/bin/compile'
