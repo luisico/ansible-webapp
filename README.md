@@ -9,6 +9,8 @@ This roles deploys web applications in a PaaS-like environment using:
 - Configuration options as environment variables.
 - Systemd for process management.
 
+Multiple buildpacks are supported to allow for applications that use multiple languages or need utilities written a different language from the main application.
+
 Requirements
 ------------
 See `meta/main.yml`.
@@ -32,7 +34,6 @@ Example:
 
 TODO
 ----
-- Generalize use of buildpacks.
 - Generalize use of env variables using `env.d` and ansible's `assemble` module.
 - Support systemd alternatives, ie monit, supervisor, pm2, etc...
 - Fix idempotency with capistrano-like directories.
