@@ -19,10 +19,6 @@
   with_items: '{{webapp_authorized_keys}}'
 
 - block:
-  - name: Get buildpack
-    git: repo={{webapp_buildpack}} dest={{webapp_path}}/buildpacks/main
-    when: webapp_buildpack is defined and webapp_buildpack != ''
-
   - name: Setup deployment directories
     deploy_helper: path={{webapp_path}}
 
@@ -76,21 +72,6 @@
       state: present
     with_items: '{{webapp_cronjobs}}'
 
-  - name: Detect main buildpack
-    command: '{{webapp_path}}/buildpacks/main/bin/detect {{deploy_helper.new_release_path}}'
-    environment: '{{webapp_buildpack_env}}'
-    when: webapp_buildpack is defined and webapp_buildpack != ''
-
-  - name: Compile main buildpack
-    command: '{{webapp_path}}/buildpacks/main/bin/compile {{deploy_helper.new_release_path}} {{deploy_helper.project_path}}/cache {{deploy_helper.project_path}}/env.d'
-    register: webapp__r_compile
-    environment: '{{webapp_buildpack_env}}'
-    when: webapp_buildpack is defined and webapp_buildpack != ''
-
-  - name: Print compilation output
-    debug: msg={{webapp__r_compile.stdout_lines}}
-    when: webapp_buildpack is defined and webapp_buildpack != ''
-
   - name: Finalize the deploy
     deploy_helper: path={{deploy_helper.project_path}} release={{deploy_helper.new_release}} state=finalize
     notify: Restart app
@@ -98,6 +79,17 @@
   - name: Add login script to profile
     blockinfile: path=~/.bash_profile block='{{webapp_login_script}}' owner={{webapp_user}} group={{webapp_group}} mode=0622
     when: webapp_login_script | default()
+
+  - include_tasks: buildpack.yml
+    with_items: '{{webapp_buildpacks}}'
+    vars:
+      name: '{{item.name}}'
+      repo: '{{item.repo}}'
+      path: '{{webapp_path}}/buildpacks/{{item.name}}'
+      env: '{{item.env | default({})}}'
+      appdir: '{{deploy_helper.new_release_path}}/{{item.appdir | default("")}}'
+      cachedir: '{{deploy_helper.project_path}}/cache'
+      envdir: '{{deploy_helper.project_path}}/env.d'
 
   become: yes
   become_user: '{{webapp_user}}'
@@ -111,6 +103,3 @@
     systemd: name={{webapp_name}} enabled=yes state=started daemon_reload=yes
 
   when: webapp_start | default()
-
-- include: extra_buildpacks.yml
-  with_items: '{{webapp_extra_buildpacks}}'

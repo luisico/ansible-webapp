@@ -1,0 +1,15 @@
+---
+- name: Get buildpack {{name}}
+  git: repo={{repo}} dest={{path}}
+
+- name: Detect buildpack {{name}}
+  command: '{{path}}/bin/detect {{appdir}}'
+  environment: '{{env}}'
+
+- name: Compile buildpack {{name}}
+  command: '{{path}}/bin/compile {{appdir}} {{cachedir}} {{envdir}}'
+  register: webapp__r_compile
+  environment: '{{env}}'
+
+- name: Print compilation output
+  debug: msg={{webapp__r_compile.stdout_lines}}
