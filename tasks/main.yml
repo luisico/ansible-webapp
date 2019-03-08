@@ -16,7 +16,7 @@
 
 - name: Add authorized keys
   authorized_key: user={{webapp_user}} key={{item}}
-  with_items: '{{webapp_authorized_keys}}'
+  with_flattened: '{{webapp_authorized_keys}}'
 
 - block:
   - name: Setup deployment directories
