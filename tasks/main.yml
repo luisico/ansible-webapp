@@ -23,7 +23,7 @@
     deploy_helper: path={{webapp_path}}
 
   - name: Allow group access to the shared folder
-    file: path={{deploy_helper.shared_path}} mode='0770'
+    file: path={{deploy_helper.shared_path}} mode='2770'
 
   - block:
     - name: Drop app deploy key
