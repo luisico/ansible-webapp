@@ -1,9 +1,10 @@
 ---
 - name: Install dependencies
-  yum: name={{item}} state=latest
-  with_items:
-    - git
-    - '{{webapp_extra_packages}}'
+  yum: name='{{packages | flatten}}' state=present
+  vars:
+    packages:
+      - git
+      - '{{webapp_extra_packages}}'
 
 - name: Add group
   group: name={{webapp_group}} state=present
@@ -16,7 +17,7 @@
 
 - name: Add authorized keys
   authorized_key: user={{webapp_user}} key={{item}}
-  with_flattened: '{{webapp_authorized_keys}}'
+  loop: '{{webapp_authorized_keys | flatten}}'
 
 - block:
   - name: Setup deployment directories
@@ -52,7 +53,7 @@
       src: '{{item.src | default(omit)}}'
       content: '{{item.content | default(omit)}}'
       mode: '{{item.mode | default("0640")}}'
-    with_items: '{{webapp_files}}'
+    loop: '{{webapp_files}}'
     no_log: '{{item.no_log | default(false)}}'
 
   - name: Add user cron jobs
@@ -70,7 +71,7 @@
       disabled: '{{item.disabled | default("no")}}'
       backup: yes
       state: present
-    with_items: '{{webapp_cronjobs}}'
+    loop: '{{webapp_cronjobs}}'
 
   - name: Finalize the deploy
     deploy_helper: path={{deploy_helper.project_path}} release={{deploy_helper.new_release}} state=finalize
@@ -81,7 +82,7 @@
     when: webapp_login_script | default()
 
   - include_tasks: buildpack.yml
-    with_items: '{{webapp_buildpacks}}'
+    loop: '{{webapp_buildpacks}}'
     vars:
       name: '{{item.name}}'
       repo: '{{item.repo}}'
